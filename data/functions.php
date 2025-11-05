@@ -25,13 +25,8 @@ function records_all(): array {
     return $stmt->fetchAll();
 }
 
-function record_insert(): void {
+function record_create(string $title, string $artist, float $price, int $format_id): void {
     $pdo = get_pdo();
-
-    $title = 'Demo Title';
-    $artist = 'Demo Artist';
-    $price = 12.99;
-    $format_id = 1;
 
     $stmt = $pdo->prepare("
     INSERT INTO records (title, artist, price, format_id)
@@ -45,14 +40,4 @@ function record_insert(): void {
         ':format_id' => $format_id,
     ]);
 
-    $rowCount = $stmt->rowCount();
-
-    if ($rowCount > 0)
-    {
-        echo "<p>Insert success: true, rows: $rowCount</p>";
-    }
-    else {
-        echo "<p>Insert success: false, rows: $rowCount</p>";
-    }
-    
 }

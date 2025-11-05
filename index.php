@@ -1,9 +1,28 @@
 <?php
 
 // IMPORTS
-require __DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'db.php';
-require __DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'functions.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'db.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'functions.php';
 
+$view   = filter_input(INPUT_GET, 'view') ?: 'list';
+$action = filter_input(INPUT_POST, 'action');
+
+switch ($action) {
+    // ========== CREATE ==========
+    case 'create':
+        // Get data from form input
+        $title    = trim((string)(filter_input(INPUT_POST, 'title') ?? ''));
+        $artist   = trim((string)(filter_input(INPUT_POST, 'artist') ?? ''));
+        $price    = (float)(filter_input(INPUT_POST, 'price') ?? 0);
+        $format_id = (int)(filter_input(INPUT_POST, 'format_id') ?? 0);
+        
+        if ($title && $artist && $format_id) {
+            record_create($title, $artist, $price, $format_id);
+            $view = 'created';
+        } else {
+            $view = 'create'; // Missing fields
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -13,51 +32,23 @@ require __DIR__ . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'function
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Record Store</title>
+
+    <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 
 <body>
-    <h2>Unit Test 1 - Formats</h2>
+
+    <!-- NAV -->
+    <?php include __DIR__ . '/components/nav.php'; ?>
+
+    <!-- PARTIALS -->
     <?php
-    $result = formats_all();
-
-    foreach ($result as $row) {
-        $name = $row['name'];
-
-        echo "<p>$name</p>";
-    }
+    if ($view === 'list')        include __DIR__ . '/partials/record-list.php';
+    elseif ($view === 'create')  include __DIR__ . '/partials/record-form.php';
+    elseif ($view === 'created') include __DIR__ . '/partials/record-created.php';
+    else                         include __DIR__ . '/partials/record-list.php';
     ?>
-    <hr>
-
-    <h2>Unit Test 2 — Records JOIN</h2>
-    <?php
-    $result = records_all();
-
-    foreach ($result as $row) {
-        $title = $row['title'];
-        $price = $row['price'];
-        $format_name = $row['name'];
-
-        echo "<p>$title - $format_name - $$price</p>";
-    }
-    ?>
-    <hr>
-
-    <h2>Unit Test 3 — Insert</h2>
-    <?php
-    record_insert();
-    $result = records_all();
-
-    foreach ($result as $row) {
-        $title = $row['title'];
-        $format_name = $row['name'];
-
-        echo "<p>$title - $format_name</p>";
-    }
-
-
-    ?>
-    <hr>
-
 
 </body>
 
