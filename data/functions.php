@@ -16,7 +16,7 @@ function formats_all(): array {
 function records_all(): array {
     $pdo = get_pdo();
     $stmt = $pdo->prepare("
-    SELECT r.title, r.artist, r.price, f.name
+    SELECT r.id, r.title, r.artist, r.price, f.name
     FROM records r
     JOIN formats f ON r.format_id = f.id
     ");
@@ -40,4 +40,22 @@ function record_create(string $title, string $artist, float $price, int $format_
         ':format_id' => $format_id,
     ]);
 
+}
+
+function record_update(int $record_id, string $title, string $artist, float $price, int $format_id): void {
+    $pdo = get_pdo();
+
+    $stmt = $pdo->prepare(
+        "UPDATE records
+        SET :title, :artist, :price, :format_id
+        WHERE id = :record_id
+        ");
+
+        $stmt->execute([
+            ':record_id' => $record_id,
+            ':title' => $title,
+            ':artist' => $artist,
+            ':price' => $price,
+            ':format_id' => $format_id
+        ]);
 }

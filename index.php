@@ -22,6 +22,10 @@ switch ($action) {
         } else {
             $view = 'create'; // Missing fields
         }
+
+
+        case 'update':
+            break;
     }
 ?>
 
@@ -47,6 +51,10 @@ switch ($action) {
     if ($view === 'list')        include __DIR__ . '/partials/record-list.php';
     elseif ($view === 'create')  include __DIR__ . '/partials/record-form.php';
     elseif ($view === 'created') include __DIR__ . '/partials/record-created.php';
+    elseif ($view === 'update')  include __DIR__ . '/partials/record-update.php';
+    elseif ($view === 'updated')  include __DIR__ . '/partials/record-updated.php';
+    elseif ($view === 'delete') include __DIR__ . '/partials/record-delete.php';
+    elseif ($view === 'deleted') include __DIR__ . '/partials/record-deleted.php';
     else                         include __DIR__ . '/partials/record-list.php';
     ?>
 

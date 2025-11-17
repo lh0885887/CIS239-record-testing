@@ -5,7 +5,7 @@ function get_pdo(): PDO
     $host = 'localhost';
     $db   = 'record_store';
     $user = 'root';
-    $pass = 'root';
+    $pass = 'root'; // MAMP: 'root', XAMPP: ''
     $charset = 'utf8mb4';
 
     $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
