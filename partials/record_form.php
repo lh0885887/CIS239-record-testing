@@ -1,6 +1,6 @@
 <?php $formats = formats_all(); ?>
 
-<div class="container">
+<div class="container mt-3">
     <form method="POST">
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>

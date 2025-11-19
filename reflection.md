@@ -1,0 +1,9 @@
+1. Require login runs when you need to ensure the user is logged in to access the action or page. This is done by checking if the session has a stored user_id. If it does not, we redirect to the login page. Now, we can call the function at the top of cases like show records, and create record to ensure that only users with an active session are accessing these pages.
+
+2. When the login button is clicked, a hidden input sets action to 'login', with triggers the login case in index.php. The login case stores the entered username and password from the form, then checks whether or not the credentials are valid, and if a user with the entered username already exists. If all checks succeed, we store the user's id and full name in $_SESSION and set $view to 'list', which will display the list of records.
+
+3. Each time "Add to Cart" is clicked, the id of the record the user clicked on is stored in $_SESSION['cart']. The cart variable is stored as an array, because we need to store multiple IDs if the user wants to buy more than one record.
+
+4. $records_in_cart is the stored result of calling the records_by_ids() function in index.php when $view === 'cart'. The records_by_id function takes each ID stored in $_SESSION['cart'] and gets the corresponding information from the database, so the cart page can populate with more than just the record's ID. It's doing exactly what it says, and getting records in the database by their IDs to populate the cart.
+
+5. Clicking complete purchase triggers a hidden form input that sets action to 'checkout', and causes the action switch case to execute checkout. When this happens, we get the record_ids from the $_SESSION['cart'], and create a new purchase record for each ID that was stored in the cart. This is done by iterating over the array using a foreach loop and inserting a new record into the purchase table for each iteration.
